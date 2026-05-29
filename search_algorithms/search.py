@@ -1,8 +1,3 @@
-"""
-Minimax, alpha-beta, heuristic alpha-beta, MCTS.
-Each takes (game, state) and returns (action, stats).
-"""
-
 import math
 import random
 import time
@@ -192,7 +187,6 @@ def mcts(game, state, iterations=1000, time_limit=None,
         return game.utility(s, root_player)
 
     def backup(node, reward):
-        # flip sign at opponent nodes so their best-child = our worst-case
         while node is not None:
             node.visits += 1
             if node.parent is not None:

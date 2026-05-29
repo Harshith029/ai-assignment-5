@@ -1,0 +1,75 @@
+loaded 88 triples from facts.csv
+persisted to kg.ttl
+
+# SPARQL queries (pre-inference)
+
+## monuments_in_hyderabad  (3 rows)
+   Charminar
+   GolcondaFort
+   RamojiFilmCity
+
+## monuments_directly_in_india  (0 rows)
+
+## monuments_in_india_via_path  (9 rows)
+   Charminar
+   GatewayOfIndia
+   GolcondaFort
+   HawaMahal
+   MysorePalace
+   QutbMinar
+   RamojiFilmCity
+   RedFort
+
+# OWL 2 RL closure: 88 -> 313 triples
+  new ex:locatedIn triples: 21
+    QutbMinar locatedIn India
+    RedFort locatedIn India
+    Mumbai locatedIn India
+    GatewayOfIndia locatedIn India
+    HawaMahal locatedIn India
+    Mysore locatedIn India
+
+# SPARQL queries (post-inference)
+
+## monuments_directly_in_india  (9 rows)
+   Charminar
+   GatewayOfIndia
+   GolcondaFort
+   HawaMahal
+   MysorePalace
+   QutbMinar
+   RamojiFilmCity
+   RedFort
+
+## telangana_architects  (2 rows)
+   QuliQutbShah | Charminar
+   IbrahimQuliQutbShah | GolcondaFort
+
+## prolific_dynasties  (2 rows)
+   QutbShahi | 2
+   Mughal | 2
+
+# Tool comparison demos
+
+## rdflib
+  model: RDF triples + SPARQL
+  result: ['Charminar', 'GolcondaFort', 'RamojiFilmCity']
+  note: best fit for standards-based semantic graphs
+
+## networkx
+  available: True
+  model: in-memory property-style graph
+  nodes: 41
+  edges: 153
+  path: ['Charminar', 'India']
+  note: best fit for algorithms; no native OWL/RDFS semantics
+
+## neo4j
+  available: False
+  ran: False
+  cypher: MERGE (c:Monument {name: $monument})
+MERGE (p:Place {name: $place})
+MERGE (c)-[:LOCATED_IN]->(p)
+  note: neo4j driver not installed; block is intentionally optional
+
+# Interactive viz: graph.html  (696 KB)

@@ -62,7 +62,7 @@ unstructured text + structured sources
    Entity Linking (REL, BLINK, GENRE) -> link to Wikidata QIDs
             |
             v
-   Relation Extraction (REBEL, OpenIE, LLM extraction)
+   Relation Extraction (REBEL, OpenIE, rules)
             |
             v
    Schema mapping + deduplication
@@ -83,7 +83,7 @@ unstructured text + structured sources
 
 | Tool | Type | Notes |
 |---|---|---|
-| **Neo4j** | property graph | The most common pick. Cypher query language, huge ecosystem, lots of AI integrations. |
+| **Neo4j** | property graph | The most common pick. Cypher query language, huge ecosystem, useful for data applications. |
 | **Memgraph** | property graph, in-memory | Faster for streaming use cases. Cypher-compatible. |
 | **Amazon Neptune** | both RDF and property graph | Managed AWS service, scales without ops. |
 | **Azure Cosmos DB** | multi-model incl. graph | Managed Azure service. |
@@ -109,9 +109,9 @@ Picking among these:
 
 | Tool | What it does |
 |---|---|
-| **LlamaIndex / LangChain** | Frameworks that wrap LLMs to ingest documents and extract entities + relations. The "low-code" option. |
+| **Stanford CoreNLP** | NLP pipeline for named entities, dependencies and relation-style patterns. |
 | **GliNER** | Zero-shot named entity recognition - works without training data. Lightweight. |
-| **Infranodus** | Online tool (and Obsidian extension) for building KGs from text with LLM assistance. |
+| **Infranodus** | Online tool for building and visualising graphs from text. |
 | **ContextClue Graph Builder** | Specialised for extracting knowledge from PDFs and tables. |
 | **spaCy** | Classical NER + dependency parsing. Still the workhorse for production NER. |
 | **REBEL** (Hugging Face) | End-to-end relation extraction; outputs triples directly. |
@@ -202,7 +202,7 @@ For a small / personal KG (~1k entities):
 RDFLib + Protégé. SQLite-backed store. SPARQL via RDFLib.
 
 For a medium internal product KG (~1M entities):
-Neo4j (community edition) + spaCy for NER + LLM-assisted relation
+Neo4j (community edition) + spaCy for NER + rule-based relation
 extraction. Cypher queries. APOC plugin for graph algorithms.
 
 For a large research KG (100M+ entities):
@@ -222,8 +222,8 @@ or pgvector) for hybrid symbolic + semantic search.
    inconsistent. Stay in OWL 2 EL or use pure Datalog where you can.
 3. **Stale data.** KGs go out of date fast. Either re-ingest from source
    on a schedule, or query the source live and cache.
-4. **Quality vs coverage tradeoff.** LLM-extracted triples have broad
-   coverage but 30-40% error rates. Always layer a validation step
+4. **Quality vs coverage tradeoff.** Automatically extracted triples
+   can have broad coverage but many errors. Always layer a validation step
    (SHACL constraints, manual spot checks, embedding-based outlier
    detection).
 

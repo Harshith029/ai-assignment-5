@@ -1,5 +1,3 @@
-"""TicTacToe and ConnectFour with a small shared interface."""
-
 from dataclasses import dataclass
 
 
@@ -132,8 +130,6 @@ class ConnectFour:
             return "draw"
         return None
 
-    # 4-window heuristic: +/- scores for live 3s, 2s, 1s, plus a center bonus.
-    # Opponent threats are slightly heavier to bias the agent toward blocking.
     def heuristic(self, s, player):
         opp = "Y" if player == "R" else "R"
         score = 0.0

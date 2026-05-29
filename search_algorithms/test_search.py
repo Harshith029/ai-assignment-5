@@ -1,5 +1,3 @@
-"""Tests for minimax / alphabeta / heuristic AB / MCTS."""
-
 import random
 import time
 import unittest

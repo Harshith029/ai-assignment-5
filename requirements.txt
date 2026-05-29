@@ -1,0 +1,19 @@
+# Task 2: OWL travel planner
+owlready2
+rdflib
+owlrl
+pulp
+
+# Task 3: knowledge graph build / visualisation
+pyvis
+networkx
+neo4j
+
+# Task 4: Bayesian networks
+pgmpy
+numpy
+
+# Test runner; tests also run with python -m unittest.
+pytest
+
+# Note: owlready2's HermiT reasoner needs a Java runtime on PATH.

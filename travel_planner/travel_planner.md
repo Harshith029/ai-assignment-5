@@ -29,10 +29,10 @@ planning passes every one of them:
 | Is there significant benefit to adapting past solutions? | A lot. Building a 7-day Kerala itinerary from scratch (sights, lodging, food, transport, timing) is much more work than tweaking a known good 7-day Kerala plan. |
 | Are previous cases obtainable? | Yes - tour operators, blog itineraries, the system's own previous outputs. |
 
-CBR also gives us things a pure rule-based or pure-LLM system would
-struggle with: graceful degradation when data is missing, the ability
-to explain a recommendation by pointing to a previous successful trip,
-and continuous learning as new trips are tried and rated.
+CBR also gives us things a plain rule-based system would struggle with:
+graceful degradation when data is missing, the ability to explain a
+recommendation by pointing to a previous successful trip, and
+continuous learning as new trips are tried and rated.
 
 ## 2. Knowledge bases the planner reuses
 
@@ -62,7 +62,7 @@ and stays fresh without manual maintenance.
                             |
                             v
 +--------------------------------------------------------------+
-|  1. INTENT + CONSTRAINT EXTRACTION (LLM)                     |
+|  1. PREFERENCE + CONSTRAINT EXTRACTION                       |
 |     -> {destination, days, diet, budget, pace, interests}    |
 +--------------------------------------------------------------+
                             |
@@ -114,7 +114,7 @@ and stays fresh without manual maintenance.
                             |
                             v
 +--------------------------------------------------------------+
-|  7. PRESENTATION (LLM writes the narrative; JSON for app)    |
+|  7. PRESENTATION (summary text + JSON for app)               |
 +--------------------------------------------------------------+
                             |
                             v
@@ -277,7 +277,7 @@ heuristic.
 | Layer | Choice | Reason |
 |---|---|---|
 | Backend | FastAPI (Python) | Async - useful for parallel KB calls |
-| LLM | Claude / GPT API | Intent extraction + final narrative |
+| Parser | argparse / form fields | Simple local input collection, no paid API |
 | Ontology engine | RDFLib + OWLready2 | Load Stanford wine ontology, run HermiT |
 | Case base | SQLite (small) -> Postgres + pgvector (larger) | Fast nearest-neighbour over a precomputed case embedding |
 | Graph store (optional) | Neo4j | If we want to persist a per-user KG of preferences and friends |
@@ -290,27 +290,25 @@ heuristic.
 1. **SPARQL endpoints rate-limit.** Mitigate with aggressive caching and
    a fallback to a local Wikidata dump (HDT format, ~100 GB).
 2. **Long-tail destinations have sparse Wikidata coverage.** Fall back
-   to OSM + LLM-generated descriptions, flagged as lower-confidence.
+   to OSM records and template descriptions, flagged as lower-confidence.
 3. **Stale prices.** Hotel and flight prices change minute to minute.
    Only bind a quote at checkout via the partner API.
 4. **Ontology mismatch.** The Stanford wine ontology uses URIs that
    don't match Wikidata's wine entities. We need an alignment layer
    (LogMap, AML) to map between them.
-5. **LLM hallucination.** Keep the LLM in the *extraction* and
-   *narrative* roles only. Never let it invent places, prices, or
-   restaurant names - those come from the KBs.
+5. **Bad or missing facts.** Never invent places, prices, or restaurant
+   names. Those must come from the KBs or live APIs.
 6. **CBR case-base poisoning.** If a bad trip ends up rated high (e.g.
    the user rated the experience, not the plan), we slowly corrupt the
    case base. Mitigation: separate "plan quality" rating from
    "experience quality" rating; only the former feeds back into CBR.
 
-## 12. Why this beats a pure-LLM travel planner
+## 12. Why this beats a plain rule-based planner
 
-A naked LLM hallucinates flight times, makes up restaurants, and gets
-prices wrong. This architecture pins every factual claim to either a
-real KB or a live API, keeping the LLM in a stylistic role only. CBR
-adds the bit a pure LLM doesn't have - explicit memory of what
-actually worked for similar travellers in the past.
+A plain rule-based planner becomes brittle as soon as preferences or
+data availability change. This architecture pins factual claims to a
+real KB or a live API, while CBR adds explicit memory of what actually
+worked for similar travellers in the past.
 
 ## 13. MVP scope (what I'd build first)
 

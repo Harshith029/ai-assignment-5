@@ -1,11 +1,3 @@
-"""
-Burglar/Earthquake/Alarm BN using pgmpy.
-
-Builds the network, runs VE and BP, does forward sampling,
-re-learns the CPDs from generated data with MLE, and shows
-the explaining-away effect at the end.
-"""
-
 from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 from pgmpy.inference import VariableElimination, BeliefPropagation
