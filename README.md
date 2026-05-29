@@ -1,39 +1,124 @@
 # AI Assignment 5
 
-Four parts:
+This repository contains four parts:
 
-1. **Search algorithms** (`search_algorithms/`) - minimax, alpha-beta,
-   heuristic alpha-beta, MCTS. Code + tests.
-2. **AI travel planner** (`travel_planner/`) - owlready2 + W3C wine
-   ontology, OWL/SWRL-style reasoning, budgeted itinerary generation,
-   CLI + tests.
-3. **Knowledge graphs** (`knowledge_graphs/`) - rdflib KG build from
-   CSV, SPARQL, OWL-RL inference, PyVis export, tool demos + tests.
-4. **Bayesian networks** (`bayesian_networks/`) - tool survey + a
-   working pgmpy implementation of the burglar/alarm network.
+1. Search algorithms
+2. AI-based travel planner
+3. Knowledge graphs and tools
+4. Bayesian network modelling and inference
 
-## Quick test
+All code is written in plain Python and can be run without installing external
+packages.
 
+## Folder Structure
+
+```text
+AI_Assignments/
+  README.md
+  search-algorithms/
+  travel-planner/
+  knowledge-graphs/
+  bayesian-network/
 ```
-pip install -r requirements.txt
 
-# Part 1
-cd search_algorithms
-python -m unittest test_search -v
-python test_search.py --demo
+## 1. Search Algorithms
 
-# Part 2
-cd ../travel_planner
-python -m unittest test_planner -v
-python planner.py --destination Tuscany --budget 1500 --days 5 \
-    --interests Heritage,WineTour,Food --group couple --diet Vegetarian
+Folder: `search-algorithms/`
 
-# Part 3
-cd ../knowledge_graphs
-python -m unittest test_kg -v
-python kg.py
+Implemented algorithms:
 
-# Part 4
-cd ../bayesian_networks
-python bayes_alarm.py
+- Minimax search
+- Alpha-Beta pruning
+- Heuristic Alpha-Beta search
+- Monte Carlo Tree Search
+
+The implementation uses Tic-Tac-Toe as the game environment. The folder also
+contains Markdown test-case files and a runnable unit test file.
+
+Run demos:
+
+```bash
+cd search-algorithms
+python minmax/minimax.py
+python alpha_beta/alpha_beta.py
+python heuristic_alpha_beta/heuristic_alpha_beta.py
+python mcts/mcts.py
 ```
+
+Run tests:
+
+```bash
+python test_search_algorithms.py
+```
+
+## 2. AI-Based Travel Planner
+
+Folder: `travel-planner/`
+
+The travel planner demonstrates:
+
+- knowledge-base style entity storage,
+- triple-style relationships,
+- case-based reasoning,
+- diet-aware food recommendation,
+- wine/cuisine pairing,
+- hotel selection,
+- cost assessment.
+
+Run:
+
+```bash
+cd travel-planner
+python travel_planner.py
+```
+
+Documentation:
+
+- `README.md` explains architecture, rules, CBR, and cost assessment.
+- `test_cases.md` describes expected behavior for demo profiles.
+
+## 3. Knowledge Graphs
+
+Folder: `knowledge-graphs/`
+
+This part describes:
+
+- what knowledge graphs are,
+- why they are useful,
+- types of graph databases,
+- tools used to build KGs,
+- a mini university KG example,
+- Cypher and RDF/SPARQL examples.
+
+Read:
+
+```text
+knowledge-graphs/README.md
+```
+
+## 4. Bayesian Network
+
+Folder: `bayesian-network/`
+
+Implemented example:
+
+```text
+Rain -> Sprinkler
+Rain -> WetGrass
+Sprinkler -> WetGrass
+```
+
+The program performs exact inference by enumeration and demonstrates the
+explaining-away effect.
+
+Run:
+
+```bash
+cd bayesian-network
+python bayesian_network.py
+```
+
+Documentation:
+
+- `README.md` explains Bayesian networks, CPTs, tools, and inference.
+- `test_cases.md` lists expected probabilities for the implemented queries.
